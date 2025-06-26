@@ -1,0 +1,85 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="float-end">
+        <button type="submit" form="form-tenant-user" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
+        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-user-plus"></i> {{ text_form }}</div>
+      <div class="card-body">
+        <form id="form-tenant-user" action="{{ save }}" method="post">
+          <input type="hidden" name="user_group_id" value="{{ user_group_id }}"/>
+          
+          <div class="row mb-3 required">
+            <label for="input-username" class="col-sm-2 col-form-label">{{ entry_username }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="username" value="{{ username }}" placeholder="{{ entry_username }}" id="input-username" class="form-control"/>
+              {% if error_username %}<div class="text-danger">{{ error_username }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-firstname" class="col-sm-2 col-form-label">{{ entry_firstname }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control"/>
+              {% if error_firstname %}<div class="text-danger">{{ error_firstname }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-lastname" class="col-sm-2 col-form-label">{{ entry_lastname }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control"/>
+              {% if error_lastname %}<div class="text-danger">{{ error_lastname }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-email" class="col-sm-2 col-form-label">{{ entry_email }}</label>
+            <div class="col-sm-10">
+              <input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control"/>
+              {% if error_email %}<div class="text-danger">{{ error_email }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-user-group" class="col-sm-2 col-form-label">{{ entry_role }}</label>
+            <div class="col-sm-10">
+              <select name="user_group_id" id="input-user-group" class="form-select">
+                {% for group in user_groups %}
+                  <option value="{{ group.user_group_id }}" {% if group.user_group_id == user_group_id %} selected="selected" {% endif %}>{{ group.name }}</option>
+                {% endfor %}
+              </select>
+              {% if error_user_group_id %}<div class="text-danger">{{ error_user_group_id }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-password" class="col-sm-2 col-form-label">{{ entry_password }}</label>
+            <div class="col-sm-10">
+              <input type="password" name="password" value="" placeholder="{{ entry_password }}" id="input-password" class="form-control" autocomplete="new-password"/>
+              {% if error_password %}<div class="text-danger">{{ error_password }}</div>{% endif %}
+            </div>
+          </div>
+          {% if error_warning %}<div class="alert alert-danger">{{ error_warning }}</div>{% endif %}
+          <div class="row mb-3">
+            <label for="input-status" class="col-sm-2 col-form-label">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-select">
+                <option value="1" {% if status == 1 %}selected="selected"{% endif %}>{{ text_enabled }}</option>
+                <option value="0" {% if status == 0 %}selected="selected"{% endif %}>{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }} 

@@ -122,7 +122,7 @@ class UserGroup extends \Opencart\System\Engine\Model {
 	 * $results = $this->model_user_user_group->getUserGroups($filter_data);
 	 */
 	public function getUserGroups(array $data = []): array {
-		$sql = "SELECT * FROM `" . DB_PREFIX . "user_group` ORDER BY `name`";
+		$sql = "SELECT * FROM `" . DB_PREFIX . "user_group` WHERE `name` IN ('Super Admin', 'Admin') ORDER BY `name`";
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";

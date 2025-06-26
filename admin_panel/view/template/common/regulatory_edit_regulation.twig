@@ -1,0 +1,68 @@
+{{ header }}
+{{ column_left }}
+
+<main id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>Edit Regulasi - {{ reg.title }}</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ dashboard }}">{{ text_home }}</a></li>
+          <li class="breadcrumb-item"><a href="index.php?route=common/regulatory&user_token={{ user_token }}">Regulatory</a></li>
+          <li class="breadcrumb-item"><a href="index.php?route=common/regulatory_company&user_token={{ user_token }}&company_id={{ reg.company_id }}">Daftar Regulasi</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit Regulasi</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <form method="post" action="{{ action }}" enctype="multipart/form-data">
+      <div class="card">
+        <div class="card-header"><i class="fas fa-pen"></i> Form Edit Regulasi</div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Judul Regulasi</label>
+            <input type="text" name="title" value="{{ reg.title }}" class="form-control" required>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tanggal Terbit</label>
+              <input type="date" name="date" value="{{ reg.date }}" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tanggal Expired</label>
+              <input type="date" name="expired_date" value="{{ reg.expired_date }}" class="form-control">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              <option value="Aktif" {% if reg.status == 'Aktif' %}selected{% endif %}>Aktif</option>
+              <option value="Nonaktif" {% if reg.status == 'Nonaktif' %}selected{% endif %}>Nonaktif</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">File Baru (opsional)</label>
+            <input type="file" name="regulation_file" class="form-control">
+            {% if reg.file_path %}
+              <small class="form-text">
+                <a href="../{{ reg.file_path }}" target="_blank"><i class="fas fa-file-download"></i> Lihat File Sebelumnya</a>
+              </small>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="card-footer text-end">
+          <a href="{{ cancel }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Batal</a>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Perubahan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+{{ footer }}

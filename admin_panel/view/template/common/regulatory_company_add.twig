@@ -1,0 +1,62 @@
+{{ header }}
+{{ column_left }}
+
+<main id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>Tambah Regulasi - {{ company.name }}</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ dashboard }}">{{ text_home }}</a></li>
+          <li class="breadcrumb-item"><a href="index.php?route=common/regulatory&user_token={{ user_token }}">Daftar Perusahaan</a></li>
+          <li class="breadcrumb-item"><a href="index.php?route=common/regulatory_company&user_token={{ user_token }}&company_id={{ company.company_id }}">{{ company.name }}</a></li>
+          <li class="breadcrumb-item active">Tambah Regulasi</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <form method="post" action="{{ action }}" enctype="multipart/form-data">
+      <div class="card">
+        <div class="card-header"><i class="fas fa-plus-circle"></i> Formulir Regulasi</div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Judul Regulasi</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tanggal Terbit</label>
+            <input type="date" name="date" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tanggal Expired</label>
+            <input type="date" name="expired_date" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">File Regulasi</label>
+            <input type="file" name="regulation_file" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card-footer text-end">
+          <a href="{{ cancel }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Batal</a>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Regulasi</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+{{ footer }}

@@ -42,7 +42,7 @@
             <div class="dropdown-menu dropdown-menu-end">
               {% if notifications %}
                 {% for notification in notifications %}
-                  <a href="{{ notification.href }}" data-bs-toggle="modal" class="dropdown-item">{{ notification.title }}</a>
+                  <a href="{{ notification.text }}" class="dropdown-item">{{ notification.title }}</a>
                 {% endfor %}
                 <a href="{{ notification_all }}" class="dropdown-item text-center text-primary">{{ text_notification_all }}</a>
               {% else %}

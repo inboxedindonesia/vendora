@@ -1,0 +1,75 @@
+{{ header }}
+{{ column_left }}
+
+<main id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>Regulatory</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ dashboard }}">{{ text_home }}</a></li>
+          <li class="breadcrumb-item active">Regulatory</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+
+    {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+
+    <!-- Filter -->
+    <div class="card mb-3">
+      <div class="card-header"><i class="fas fa-search"></i> Cari Perusahaan</div>
+      <div class="card-body">
+        <form method="get" action="{{ action }}">
+          <input type="hidden" name="user_token" value="{{ user_token }}">
+          <div class="input-group">
+            <input type="text" name="filter_name" value="{{ filter_name }}" class="form-control" placeholder="Cari nama perusahaan...">
+            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Cari</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- List Perusahaan -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-building"></i> Perusahaan Terdaftar</span>
+      </div>
+
+      <div class="card-body p-0">
+        <table class="table table-bordered table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Nama Perusahaan</th>
+              <th style="width: 250px;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if companies %}
+              {% for company in companies %}
+              <tr>
+                <td>{{ company.name }}</td>
+                <td class="d-flex gap-1">
+                  <a href="index.php?route=common/regulatory_company&user_token={{ user_token }}&company_id={{ company.company_id }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-folder-open"></i> Kelola
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="2" class="text-center text-muted">Tidak ada perusahaan ditemukan.</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+{{ footer }}

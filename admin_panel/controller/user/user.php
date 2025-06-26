@@ -110,7 +110,12 @@ class User extends \Opencart\System\Engine\Controller {
 		// User Group
 		$this->load->model('user/user_group');
 
-		$data['user_groups'] = $this->model_user_user_group->getUserGroups();
+		$user_groups = $this->model_user_user_group->getUserGroups();
+
+		// Filter to only show system-level user groups
+		$data['user_groups'] = array_filter($user_groups, function($group) {
+			return in_array($group['name'], ['Super Admin', 'Admin']);
+		});
 
 		$data['filter_username'] = $filter_name;
 		$data['filter_name'] = $filter_name;
@@ -366,6 +371,8 @@ class User extends \Opencart\System\Engine\Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
+		$this->load->model('user/user');
+
 		$data['text_form'] = !isset($this->request->get['user_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
 		$url = '';
@@ -422,8 +429,6 @@ class User extends \Opencart\System\Engine\Controller {
 		$data['back'] = $this->url->link('user/user', 'user_token=' . $this->session->data['user_token'] . $url);
 
 		if (isset($this->request->get['user_id'])) {
-			$this->load->model('user/user');
-
 			$user_info = $this->model_user_user->getUser($this->request->get['user_id']);
 		}
 
@@ -442,7 +447,12 @@ class User extends \Opencart\System\Engine\Controller {
 		// User Group
 		$this->load->model('user/user_group');
 
-		$data['user_groups'] = $this->model_user_user_group->getUserGroups();
+		$user_groups = $this->model_user_user_group->getUserGroups();
+
+		// Filter to only show system-level user groups
+		$data['user_groups'] = array_filter($user_groups, function($group) {
+			return in_array($group['name'], ['Super Admin', 'Admin']);
+		});
 
 		if (!empty($user_info)) {
 			$data['user_group_id'] = $user_info['user_group_id'];
@@ -491,8 +501,10 @@ class User extends \Opencart\System\Engine\Controller {
 			$data['status'] = 0;
 		}
 
-		$data['authorize'] = $this->getAuthorize();
-		$data['login'] = $this->getLogin();
+		// If user provides an id and it does not exist, redirect to the list page
+		if (isset($this->request->get['user_id']) && !$user_info) {
+			$this->response->redirect($this->url->link('user/user', 'user_token=' . $this->session->data['user_token']));
+		}
 
 		$data['user_token'] = $this->session->data['user_token'];
 
@@ -592,11 +604,15 @@ class User extends \Opencart\System\Engine\Controller {
 			}
 		}
 
-		if (!$json) {
-			if (!$post_info['user_id']) {
-				$json['user_id'] = $this->model_user_user->addUser($post_info);
+		if (isset($this->error['warning'])) {
+			$json['error'] = $this->error['warning'];
+		} else {
+			$this->load->model('user/user');
+
+			if (!$this->request->post['user_id']) {
+				$this->model_user_user->addUser($this->request->post);
 			} else {
-				$this->model_user_user->editUser($post_info['user_id'], $post_info);
+				$this->model_user_user->editUser($this->request->post['user_id'], $this->request->post);
 			}
 
 			$json['success'] = $this->language->get('text_success');

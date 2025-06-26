@@ -5,7 +5,12 @@
         <h5 class="modal-title"><i class="fa-regular fa-bell"></i> {{ heading_title }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">{{ text }}</div>
+      <div class="modal-body" style="white-space: normal !important;">
+        {{ text }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ button_close }}</button>
+      </div>
     </div>
   </div>
 </div>

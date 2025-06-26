@@ -29,6 +29,55 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 				'children' => []
 			];
 
+			// --- Cleaned Menu Logic ---
+
+			// Tenant Menu
+			$tenant = [];
+
+			if ($this->user->hasPermission('access', 'common/tenant_list')) {
+				$tenant[] = [
+					'name'     => $this->language->get('text_tenant_list'),
+					'href'     => $this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			if ($this->user->hasPermission('access', 'common/tenant_add')) {
+				$tenant[] = [
+					'name'     => $this->language->get('text_tenant_add'),
+					'href'     => $this->url->link('common/tenant_add', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			if ($this->user->hasPermission('access', 'common/tenant_user_group')) {
+				$tenant[] = [
+					'name'	   => $this->language->get('text_user_group'),
+					'href'     => $this->url->link('common/tenant_user_group', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+
+			// Only add the main Tenant menu if there are any visible sub-items
+			if ($tenant) {
+				$data['menus'][] = [
+					'id'       => 'menu-tenant',
+					'icon'     => 'fas fa-building',
+					'name'     => $this->language->get('text_tenant'),
+					'href'     => '',
+					'children' => $tenant
+				];
+			}
+			
+			// Regulatory menu - simplified
+			if ($this->user->hasPermission('access', 'common/regulatory')) {
+				$data['menus'][] = [
+					'id'       => 'menu-regulatory',
+					'icon'     => 'fas fa-balance-scale',
+					'name'     => 'Regulatory',
+					'href'     => $this->url->link('common/regulatory', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+			}
+			
 			// Catalog
 			$catalog = [];
 
@@ -497,16 +546,6 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 				];
 			}
 
-			$marketing = [];
-
-			if ($this->user->hasPermission('access', 'marketing/affiliate')) {
-				$marketing[] = [
-					'name'     => $this->language->get('text_affiliate'),
-					'href'     => $this->url->link('marketing/affiliate', 'user_token=' . $this->session->data['user_token']),
-					'children' => []
-				];
-			}
-
 			// System
 			$system = [];
 
@@ -847,6 +886,10 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 			} else {
 				$data['statistics_status'] = false;
 			}
+
+			$data['tenant_list'] = $this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token'], true);
+			$data['tenant_add'] = $this->url->link('common/tenant_add', 'user_token=' . $this->session->data['user_token'], true);
+			$data['tenant_user_group'] = $this->url->link('common/tenant_user_group', 'user_token=' . $this->session->data['user_token'], true);
 
 			return $this->load->view('common/column_left', $data);
 		} else {
