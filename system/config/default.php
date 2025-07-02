@@ -11,11 +11,11 @@ $_['date_timezone']        = 'UTC';
 // Database
 $_['db_autostart']         = false;
 $_['db_engine']            = 'mysqli'; // mysqli, pdo or pgsql
-$_['db_hostname']          = 'localhost';
-$_['db_username']          = 'root';
-$_['db_password']          = '';
-$_['db_database']          = '';
-$_['db_port']              = 3306;
+$_['db_hostname']          = getenv('DB_HOST') ?: 'localhost';
+$_['db_username']          = getenv('DB_USER') ?: 'root';
+$_['db_password']          = getenv('DB_PASS') ?: '';
+$_['db_database']          = getenv('DB_NAME') ?: '';
+$_['db_port']              = getenv('DB_PORT') ?: 3306;
 //$_['db_ssl_key']         = '';
 //$_['db_ssl_cert']        = '';
 //$_['db_ssl_ca']          = '';
