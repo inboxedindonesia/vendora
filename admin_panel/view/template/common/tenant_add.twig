@@ -26,12 +26,60 @@
           <fieldset>
             <legend>{{ legend_company }}</legend>
             <div class="row mb-3 required">
-              <label for="input-company-name" class="col-sm-2 col-form-label">{{ entry_company_name }}</label>
+              <label for="input-company-name" class="col-sm-2 col-form-label"><span class="text-danger"></span> {{ entry_company_name }}</label>
               <div class="col-sm-10">
-                <input type="text" name="company_name" value="{{ company_name }}" placeholder="{{ entry_company_name }}" id="input-company-name" class="form-control" />
+                <input type="text" name="company_name" value="{{ company_name }}" placeholder="{{ entry_company_name }}" id="input-company-name" class="form-control" required />
                 {% if error_company_name %}
                 <div class="text-danger">{{ error_company_name }}</div>
                 {% endif %}
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-business-type" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_business_type }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="business_type" value="{{ business_type }}" placeholder="{{ entry_business_type }}" id="input-business-type" class="form-control" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-owner-name" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_owner_name }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="owner_name" value="{{ owner_name }}" placeholder="{{ entry_owner_name }}" id="input-owner-name" class="form-control" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-address" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_address }}</label>
+              <div class="col-sm-10">
+                <textarea name="address" placeholder="{{ entry_address }}" id="input-address" class="form-control" required>{{ address }}</textarea>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-city" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_city }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-province" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_province }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="province" value="{{ province }}" placeholder="{{ entry_province }}" id="input-province" class="form-control" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-country" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_country }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="country" value="{{ country }}" placeholder="{{ entry_country }}" id="input-country" class="form-control" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-postcode" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_postcode }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-postcode" class="form-control" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="input-contact" class="col-sm-2 col-form-label"><span class="text-danger">*</span> {{ entry_contact }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="contact" value="{{ contact }}" placeholder="{{ entry_contact }}" id="input-contact" class="form-control" required />
               </div>
             </div>
           </fieldset>

@@ -37,6 +37,9 @@ class Chart extends \Opencart\System\Engine\Controller {
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=dashboard');
 
 		$data['dashboard_chart_width'] = $this->config->get('dashboard_chart_width');
+		if (!$data['dashboard_chart_width']) {
+			$data['dashboard_chart_width'] = 12;
+		}
 
 		$data['columns'] = [];
 
@@ -45,7 +48,11 @@ class Chart extends \Opencart\System\Engine\Controller {
 		}
 
 		$data['dashboard_chart_status'] = $this->config->get('dashboard_chart_status');
+		
 		$data['dashboard_chart_sort_order'] = $this->config->get('dashboard_chart_sort_order');
+		if (!$data['dashboard_chart_sort_order']) {
+			$data['dashboard_chart_sort_order'] = 2;
+		}
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

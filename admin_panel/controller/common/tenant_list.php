@@ -8,7 +8,7 @@ class TenantList extends \Opencart\System\Engine\Controller {
         
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('common/regulatory');
+        $this->load->model('common/tenant');
 
         $data['breadcrumbs'] = [];
 
@@ -27,14 +27,18 @@ class TenantList extends \Opencart\System\Engine\Controller {
 
         $data['companies'] = [];
         
-        $results = $this->model_common_regulatory->getCompanies();
+        $results = $this->model_common_tenant->getCompanies();
 
         foreach ($results as $result) {
             $data['companies'][] = [
                 'company_id'  => $result['company_id'],
                 'name'        => $result['name'],
+                'owner_name'  => $result['owner_name'],
+                'email'       => $result['email'],
+                'contact'     => $result['contact'],
                 'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-                'edit'        => $this->url->link('common/tenant_form', 'user_token=' . $this->session->data['user_token'] . '&company_id=' . $result['company_id'])
+                'edit'        => $this->url->link('common/tenant_form', 'user_token=' . $this->session->data['user_token'] . '&company_id=' . $result['company_id']),
+                'view'        => $this->url->link('common/tenant_view', 'user_token=' . $this->session->data['user_token'] . '&company_id=' . $result['company_id'])
             ];
         }
 
@@ -63,7 +67,7 @@ class TenantList extends \Opencart\System\Engine\Controller {
 
     public function delete(): void {
         $this->load->language('common/tenant_list');
-        $this->load->model('common/regulatory');
+        $this->load->model('common/tenant');
 
         $json = [];
 
@@ -72,7 +76,7 @@ class TenantList extends \Opencart\System\Engine\Controller {
         } else {
             if (isset($this->request->post['selected'])) {
                 foreach ($this->request->post['selected'] as $company_id) {
-                    $this->model_common_regulatory->deleteCompany($company_id);
+                    $this->model_common_tenant->deleteCompany($company_id);
                 }
             }
             

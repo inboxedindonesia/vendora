@@ -37,6 +37,9 @@ class Map extends \Opencart\System\Engine\Controller {
 		$data['back'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=dashboard');
 
 		$data['dashboard_map_width'] = $this->config->get('dashboard_map_width');
+		if (!$data['dashboard_map_width']) {
+			$data['dashboard_map_width'] = 12;
+		}
 
 		$data['columns'] = [];
 
@@ -45,7 +48,11 @@ class Map extends \Opencart\System\Engine\Controller {
 		}
 
 		$data['dashboard_map_status'] = $this->config->get('dashboard_map_status');
+		
 		$data['dashboard_map_sort_order'] = $this->config->get('dashboard_map_sort_order');
+		if (!$data['dashboard_map_sort_order']) {
+			$data['dashboard_map_sort_order'] = 1;
+		}
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

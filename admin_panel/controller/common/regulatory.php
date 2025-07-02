@@ -5,6 +5,7 @@ class Regulatory extends \Opencart\System\Engine\Controller {
     public function index(): void {
         $this->load->language('common/regulatory');
         $this->load->model('common/regulatory');
+        $this->load->model('common/tenant');
         $this->document->setTitle($this->language->get('heading_title'));
 
         $user_id = $this->user->getId();
@@ -16,7 +17,7 @@ class Regulatory extends \Opencart\System\Engine\Controller {
             $this->getList();
         } else {
             // If user is a tenant-level user, redirect them to their company's edit page.
-            $company_user = $this->model_common_regulatory->getCompanyUser($user_id);
+            $company_user = $this->model_common_tenant->getCompanyUser($user_id);
 
             if ($company_user) {
                 // Redirect ke halaman regulatory_company miliknya
@@ -38,9 +39,9 @@ class Regulatory extends \Opencart\System\Engine\Controller {
 
         // Admins see all companies, tenant only sees their own
         if ($user_group_id == 1 || $user_group_id == 2) {
-            $data['companies'] = $this->model_common_regulatory->getCompanies($filter_name);
+            $data['companies'] = $this->model_common_tenant->getCompanies($filter_name);
         } else {
-            $data['companies'] = $this->model_common_regulatory->getCompanies($filter_name, $user_id);
+            $data['companies'] = $this->model_common_tenant->getCompanies($filter_name, $user_id);
         }
 
         $data['action'] = $this->url->link('common/regulatory', 'user_token=' . $this->session->data['user_token']);

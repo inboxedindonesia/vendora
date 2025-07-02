@@ -1,18 +1,6 @@
 <?php
 namespace Opencart\Admin\Controller\Catalog;
-/**
- * Class Product
- *
- * Can be loaded using $this->load->controller('catalog/product');
- *
- * @package Opencart\Admin\Controller\Catalog
- */
 class Product extends \Opencart\System\Engine\Controller {
-	/**
-	 * Index
-	 *
-	 * @return void
-	 */
 	public function index(): void {
 		$this->load->language('catalog/product');
 
@@ -50,18 +38,6 @@ class Product extends \Opencart\System\Engine\Controller {
 			$filter_price_to = $this->request->get['filter_price_to'];
 		} else {
 			$filter_price_to = '';
-		}
-
-		if (isset($this->request->get['filter_quantity_from'])) {
-			$filter_quantity_from = $this->request->get['filter_quantity_from'];
-		} else {
-			$filter_quantity_from = '';
-		}
-
-		if (isset($this->request->get['filter_quantity_to'])) {
-			$filter_quantity_to = $this->request->get['filter_quantity_to'];
-		} else {
-			$filter_quantity_to = '';
 		}
 
 		if (isset($this->request->get['filter_quantity_from'])) {
@@ -191,21 +167,15 @@ class Product extends \Opencart\System\Engine\Controller {
 		$this->response->setOutput($this->load->view('catalog/product', $data));
 	}
 
-	/**
-	 * List
-	 *
-	 * @return void
-	 */
 	public function list(): void {
 		$this->load->language('catalog/product');
 
 		$this->response->setOutput($this->load->controller('catalog/product.getList'));
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getList(): string {
+		$this->load->language('catalog/product');
+		
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = $this->request->get['filter_name'];
 		} else {
@@ -316,104 +286,6 @@ class Product extends \Opencart\System\Engine\Controller {
 			$url .= '&filter_status=' . $this->request->get['filter_status'];
 		}
 
-		if (isset($this->request->get['page'])) {
-			$url .= '&page=' . $this->request->get['page'];
-		}
-
-		$data['action'] = $this->url->link('catalog/product.list', 'user_token=' . $this->session->data['user_token'] . $url);
-
-		// Product
-		$data['products'] = [];
-
-		$filter_data = [
-			'filter_name'            => $filter_name,
-			'filter_model'           => $filter_model,
-			'filter_category_id'     => $filter_category_id,
-			'filter_manufacturer_id' => $filter_manufacturer_id,
-			'filter_price_from'      => $filter_price_from,
-			'filter_price_to'        => $filter_price_to,
-			'filter_quantity_from'   => $filter_quantity_from,
-			'filter_quantity_to'     => $filter_quantity_to,
-			'filter_status'          => $filter_status,
-			'sort'                   => $sort,
-			'order'                  => $order,
-			'start'                  => ($page - 1) * $this->config->get('config_pagination_admin'),
-			'limit'                  => $this->config->get('config_pagination_admin')
-		];
-
-		$this->load->model('catalog/product');
-
-		// Image
-		$this->load->model('tool/image');
-
-		$results = $this->model_catalog_product->getProducts($filter_data);
-
-		foreach ($results as $result) {
-			if ($result['image'] && is_file(DIR_IMAGE . html_entity_decode($result['image'], ENT_QUOTES, 'UTF-8'))) {
-				$image = $result['image'];
-			} else {
-				$image = 'no_image.png';
-			}
-
-			$special = '';
-
-			$product_discounts = $this->model_catalog_product->getDiscounts($result['product_id']);
-
-			foreach ($product_discounts as $product_discount) {
-				if (($product_discount['date_start'] == '0000-00-00' || strtotime($product_discount['date_start']) < time()) && ($product_discount['date_end'] == '0000-00-00' || strtotime($product_discount['date_end']) > time())) {
-					$special = $this->currency->format($product_discount['price'], $this->config->get('config_currency'));
-
-					break;
-				}
-			}
-
-			$data['products'][] = [
-				'image'   => $this->model_tool_image->resize($image, 40, 40),
-				'price'   => $this->currency->format($result['price'], $this->config->get('config_currency')),
-				'special' => $special,
-				'edit'    => $this->url->link('catalog/product.form', 'user_token=' . $this->session->data['user_token'] . '&product_id=' . $result['product_id'] . ($result['master_id'] ? '&master_id=' . $result['master_id'] : '') . $url),
-				'variant' => (!$result['master_id'] ? $this->url->link('catalog/product.form', 'user_token=' . $this->session->data['user_token'] . '&master_id=' . $result['product_id'] . $url) : '')
-			] + $result;
-		}
-
-		$url = '';
-
-		if (isset($this->request->get['filter_name'])) {
-			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
-		}
-
-		if (isset($this->request->get['filter_model'])) {
-			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
-		}
-
-		if (isset($this->request->get['filter_category_id'])) {
-			$url .= '&filter_category_id=' . $this->request->get['filter_category_id'];
-		}
-
-		if (isset($this->request->get['filter_manufacturer_id'])) {
-			$url .= '&filter_manufacturer_id=' . $this->request->get['filter_manufacturer_id'];
-		}
-
-		if (isset($this->request->get['filter_price_from'])) {
-			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
-		}
-
-		if (isset($this->request->get['filter_price_to'])) {
-			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
-		}
-
-		if (isset($this->request->get['filter_quantity_from'])) {
-			$url .= '&filter_quantity_from=' . $this->request->get['filter_quantity_from'];
-		}
-
-		if (isset($this->request->get['filter_quantity_to'])) {
-			$url .= '&filter_quantity_to=' . $this->request->get['filter_quantity_to'];
-		}
-
-		if (isset($this->request->get['filter_status'])) {
-			$url .= '&filter_status=' . $this->request->get['filter_status'];
-		}
-
 		if ($order == 'ASC') {
 			$url .= '&order=DESC';
 		} else {
@@ -472,7 +344,58 @@ class Product extends \Opencart\System\Engine\Controller {
 			$url .= '&order=' . $this->request->get['order'];
 		}
 
+		$data['products'] = [];
+
+		$filter_data = [
+			'filter_name'            => $filter_name,
+			'filter_model'           => $filter_model,
+			'filter_category_id'     => $filter_category_id,
+			'filter_manufacturer_id' => $filter_manufacturer_id,
+			'filter_price_from'      => $filter_price_from,
+			'filter_price_to'        => $filter_price_to,
+			'filter_quantity_from'   => $filter_quantity_from,
+			'filter_quantity_to'     => $filter_quantity_to,
+			'filter_status'          => $filter_status,
+			'sort'                   => $sort,
+			'order'                  => $order,
+			'start'                  => ($page - 1) * $this->config->get('config_pagination_admin'),
+			'limit'                  => $this->config->get('config_pagination_admin')
+		];
+		
+		$this->load->model('catalog/product');
+		$this->load->model('tool/image');
+		
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
+		
+		$results = $this->model_catalog_product->getProducts($filter_data);
+
+		foreach ($results as $result) {
+			if ($result['image'] && is_file(DIR_IMAGE . html_entity_decode($result['image'], ENT_QUOTES, 'UTF-8'))) {
+				$image = $result['image'];
+			} else {
+				$image = 'no_image.png';
+			}
+
+			$special = '';
+
+			$product_discounts = $this->model_catalog_product->getDiscounts($result['product_id']);
+
+			foreach ($product_discounts as $product_discount) {
+				if (($product_discount['date_start'] == '0000-00-00' || strtotime($product_discount['date_start']) < time()) && ($product_discount['date_end'] == '0000-00-00' || strtotime($product_discount['date_end']) > time())) {
+					$special = $this->currency->format($product_discount['price'], $this->config->get('config_currency'));
+
+					break;
+				}
+			}
+
+			$data['products'][] = [
+				'image'   => $this->model_tool_image->resize($image, 40, 40),
+				'price'   => $this->currency->format($result['price'], $this->config->get('config_currency')),
+				'special' => $special,
+				'edit'    => $this->url->link('catalog/product.form', 'user_token=' . $this->session->data['user_token'] . '&product_id=' . $result['product_id'] . ($result['master_id'] ? '&master_id=' . $result['master_id'] : '') . $url),
+				'variant' => (!$result['master_id'] ? $this->url->link('catalog/product.form', 'user_token=' . $this->session->data['user_token'] . '&master_id=' . $result['product_id'] . $url) : '')
+			] + $result;
+		}
 
 		$data['pagination'] = $this->load->controller('common/pagination', [
 			'total' => $product_total,
@@ -489,11 +412,6 @@ class Product extends \Opencart\System\Engine\Controller {
 		return $this->load->view('catalog/product_list', $data);
 	}
 
-	/**
-	 * Form
-	 *
-	 * @return void
-	 */
 	public function form(): void {
 		$this->load->language('catalog/product');
 
@@ -701,6 +619,24 @@ class Product extends \Opencart\System\Engine\Controller {
 		} else {
 			$data['price'] = '';
 		}
+		
+		if (!empty($product_info)) {
+			$data['date_expired'] = ($product_info['date_expired'] != '0000-00-00') ? $product_info['date_expired'] : '';
+		} else {
+			$data['date_expired'] = '';
+		}
+		
+		if (!empty($product_info)) {
+			$data['bpom'] = $product_info['bpom'];
+		} else {
+			$data['bpom'] = '';
+		}
+		
+		if (!empty($product_info)) {
+			$data['halal'] = $product_info['halal'];
+		} else {
+			$data['halal'] = 0;
+		}
 
 		// Tax Class
 		$this->load->model('localisation/tax_class');
@@ -776,6 +712,12 @@ class Product extends \Opencart\System\Engine\Controller {
 			$data['height'] = $product_info['height'];
 		} else {
 			$data['height'] = '';
+		}
+
+		if (!empty($product_info)) {
+			$data['auto_discount_days'] = $product_info['auto_discount_days'];
+		} else {
+			$data['auto_discount_days'] = 0;
 		}
 
 		// Length Class
@@ -1160,11 +1102,6 @@ class Product extends \Opencart\System\Engine\Controller {
 		$this->response->setOutput($this->load->view('catalog/product_form', $data));
 	}
 
-	/**
-	 * Save
-	 *
-	 * @return void
-	 */
 	public function save(): void {
 		$this->load->language('catalog/product');
 
@@ -1179,6 +1116,12 @@ class Product extends \Opencart\System\Engine\Controller {
 			'master_id'           => 0,
 			'product_description' => [],
 			'model'               => '',
+			'sku'                 => '',
+			'upc'                 => '',
+			'ean'                 => '',
+			'jan'                 => '',
+			'isbn'                => '',
+			'mpn'                 => '',
 			'product_code'        => [],
 			'location'            => '',
 			'variant'             => [],
@@ -1188,6 +1131,9 @@ class Product extends \Opencart\System\Engine\Controller {
 			'subtract'            => 0,
 			'stock_status_id'     => 0,
 			'date_available'      => '',
+			'date_expired'        => '',
+			'bpom'                => '',
+			'halal'               => 0,
 			'manufacturer_id'     => 0,
 			'shipping'            => 0,
 			'price'               => 0.0,
@@ -1195,10 +1141,13 @@ class Product extends \Opencart\System\Engine\Controller {
 			'weight'              => 0.0,
 			'weight_class_id'     => 0,
 			'length'              => 0.0,
+			'width'               => 0.0,
+			'height'              => 0.0,
 			'length_class_id'     => 0,
 			'status'              => 0,
 			'tax_class_id'        => 0,
-			'sort_order'          => 0
+			'sort_order'          => 0,
+			'auto_discount_days'  => 0
 		];
 
 		$post_info = $this->request->post + $required;
@@ -1206,10 +1155,6 @@ class Product extends \Opencart\System\Engine\Controller {
 		foreach ($post_info['product_description'] as $language_id => $value) {
 			if (!oc_validate_length($value['name'], 1, 255)) {
 				$json['error']['name_' . $language_id] = $this->language->get('error_name');
-			}
-
-			if (!oc_validate_length($value['meta_title'], 1, 255)) {
-				$json['error']['meta_title_' . $language_id] = $this->language->get('error_meta_title');
 			}
 		}
 
@@ -1241,7 +1186,7 @@ class Product extends \Opencart\System\Engine\Controller {
 		}
 
 		// SEO
-		if ($post_info['product_seo_url']) {
+		if (!empty($post_info['product_seo_url'])) {
 			$this->load->model('design/seo_url');
 
 			foreach ($post_info['product_seo_url'] as $store_id => $language) {
@@ -1296,11 +1241,6 @@ class Product extends \Opencart\System\Engine\Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	/**
-	 * Delete
-	 *
-	 * @return void
-	 */
 	public function delete(): void {
 		$this->load->language('catalog/product');
 
@@ -1331,11 +1271,6 @@ class Product extends \Opencart\System\Engine\Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	/**
-	 * Copy
-	 *
-	 * @return void
-	 */
 	public function copy(): void {
 		$this->load->language('catalog/product');
 
@@ -1365,22 +1300,12 @@ class Product extends \Opencart\System\Engine\Controller {
 		$this->response->setOutput(json_encode($json));
 	}
 
-	/**
-	 * Report
-	 *
-	 * @return void
-	 */
 	public function report(): void {
 		$this->load->language('catalog/product');
 
 		$this->response->setOutput($this->getReport());
 	}
 
-	/**
-	 * Get Report
-	 *
-	 * @return string
-	 */
 	public function getReport(): string {
 		if (isset($this->request->get['product_id'])) {
 			$product_id = (int)$this->request->get['product_id'];
@@ -1439,11 +1364,6 @@ class Product extends \Opencart\System\Engine\Controller {
 		return $this->load->view('catalog/product_report', $data);
 	}
 
-	/**
-	 * Autocomplete
-	 *
-	 * @return void
-	 */
 	public function autocomplete(): void {
 		$this->load->language('catalog/product');
 

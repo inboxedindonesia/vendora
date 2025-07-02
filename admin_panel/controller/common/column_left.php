@@ -60,8 +60,8 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 			if ($tenant) {
 				$data['menus'][] = [
 					'id'       => 'menu-tenant',
-					'icon'     => 'fas fa-building',
-					'name'     => $this->language->get('text_tenant'),
+					'icon'     => 'fa-solid fa-users',
+					'name'     => $this->language->get('text_tenant_menu'),
 					'href'     => '',
 					'children' => $tenant
 				];
@@ -69,15 +69,15 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 			
 			// Regulatory menu - simplified
 			if ($this->user->hasPermission('access', 'common/regulatory')) {
-				$data['menus'][] = [
-					'id'       => 'menu-regulatory',
-					'icon'     => 'fas fa-balance-scale',
+			$data['menus'][] = [
+				'id'       => 'menu-regulatory',
+				'icon'     => 'fas fa-balance-scale',
 					'name'     => 'Regulatory',
-					'href'     => $this->url->link('common/regulatory', 'user_token=' . $this->session->data['user_token']),
-					'children' => []
-				];
+				'href'     => $this->url->link('common/regulatory', 'user_token=' . $this->session->data['user_token']),
+				'children' => []
+			];
 			}
-			
+
 			// Catalog
 			$catalog = [];
 
@@ -890,6 +890,33 @@ class ColumnLeft extends \Opencart\System\Engine\Controller {
 			$data['tenant_list'] = $this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token'], true);
 			$data['tenant_add'] = $this->url->link('common/tenant_add', 'user_token=' . $this->session->data['user_token'], true);
 			$data['tenant_user_group'] = $this->url->link('common/tenant_user_group', 'user_token=' . $this->session->data['user_token'], true);
+
+			// Settings (khusus user tenant, bukan admin global)
+			if ($this->user->getGroupId() > 2) { // misal: 1=superadmin, 2=admin, >2=tenant
+				$tenant_area = [];
+				$tenant_area[] = [
+					'name'     => $this->language->get('text_tenant_profile'),
+					'href'     => $this->url->link('tenant/profile', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$tenant_area[] = [
+					'name'     => $this->language->get('text_tenant_user'),
+					'href'     => $this->url->link('tenant/user', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$tenant_area[] = [
+					'name'     => $this->language->get('text_tenant_ticket'),
+					'href'     => $this->url->link('tenant/ticket', 'user_token=' . $this->session->data['user_token']),
+					'children' => []
+				];
+				$data['menus'][] = [
+					'id'       => 'menu-tenant-area',
+					'icon'     => 'fas fa-cog',
+					'name'     => $this->language->get('text_tenant_area'),
+					'href'     => '',
+					'children' => $tenant_area
+				];
+			}
 
 			return $this->load->view('common/column_left', $data);
 		} else {

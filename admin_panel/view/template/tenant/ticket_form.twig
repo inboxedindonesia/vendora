@@ -1,0 +1,44 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header bg-light py-3 mb-4">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+      <h1 class="m-0">{{ heading_title }}</h1>
+      <ol class="breadcrumb m-0">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ heading_title }}</div>
+      <div class="card-body">
+        <form id="form-tenant-ticket" action="{{ action }}" method="post">
+          <div class="float-end">
+            <button type="submit" data-bs-toggle="tooltip" title="Kirim" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+            <a href="{{ back }}" data-bs-toggle="tooltip" title="Kembali" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+          </div>
+          <div class="row mb-3 required">
+            <label class="col-sm-2 col-form-label">Subjek</label>
+            <div class="col-sm-10">
+              <input type="text" name="subject" placeholder="Subjek" class="form-control" required value="{{ ticket.subject is defined ? ticket.subject : '' }}"/>
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label class="col-sm-2 col-form-label">Pesan</label>
+            <div class="col-sm-10">
+              <textarea name="message" placeholder="Pesan" class="form-control" rows="5" required>{{ ticket.message is defined ? ticket.message : '' }}</textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }} 

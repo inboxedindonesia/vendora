@@ -1,0 +1,85 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header bg-light py-3 mb-4">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="m-0">{{ heading_title }}</h1>
+        <ol class="breadcrumb mt-2 mb-0">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+      <div>
+        <button type="submit" form="form-tenant-user" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
+        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
+    <div class="card shadow-sm">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ heading_title }}</div>
+      <div class="card-body">
+        <form id="form-tenant-user" action="{{ action }}" method="post">
+          <div class="row mb-3 required">
+            <label for="input-username" class="col-sm-2 col-form-label">{{ entry_username }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="username" value="{{ user.username is defined ? user.username : '' }}" placeholder="{{ entry_username }}" id="input-username" class="form-control" required/>
+              <div id="error-username" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-firstname" class="col-sm-2 col-form-label">{{ entry_firstname }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="firstname" value="{{ user.firstname is defined ? user.firstname : '' }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" required/>
+              <div id="error-firstname" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-lastname" class="col-sm-2 col-form-label">{{ entry_lastname }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="lastname" value="{{ user.lastname is defined ? user.lastname : '' }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" required/>
+              <div id="error-lastname" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-email" class="col-sm-2 col-form-label">{{ entry_email }}</label>
+            <div class="col-sm-10">
+              <input type="email" name="email" value="{{ user.email is defined ? user.email : '' }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" required/>
+              <div id="error-email" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-password" class="col-sm-2 col-form-label">{{ entry_password }}</label>
+            <div class="col-sm-10">
+              <input type="password" name="password" placeholder="{{ entry_password }}" id="input-password" class="form-control" {{ user is defined ? '' : 'required' }}/>
+              <div id="error-password" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-3 required">
+            <label for="input-confirm" class="col-sm-2 col-form-label">{{ entry_confirm }}</label>
+            <div class="col-sm-10">
+              <input type="password" name="confirm" placeholder="{{ entry_confirm }}" id="input-confirm" class="form-control" {{ user is defined ? '' : 'required' }}/>
+              <div id="error-confirm" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <div class="form-check form-switch form-switch-lg">
+                <input type="hidden" name="status" value="0"/>
+                <input type="checkbox" name="status" value="1" id="input-status" class="form-check-input"{% if user.status is defined and user.status %} checked{% endif %}/>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }} 

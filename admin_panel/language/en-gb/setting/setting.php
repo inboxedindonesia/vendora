@@ -110,7 +110,7 @@ $_['entry_telephone_display']             = 'Telephone Display';
 $_['entry_telephone_required']            = 'Telephone Required';
 $_['entry_2fa']                           = 'Two-factor Security';
 $_['entry_2fa_expire']                    = 'Token Expire';
-$_['entry_login_attempts']                = 'Max Login Attempts';
+$_['entry_login_attempts']                = 'Login Attempts';
 $_['entry_password']                      = 'Password Requirements';
 $_['entry_password_length']               = 'Password Minimum Length';
 $_['entry_account']                       = 'Account Terms';
@@ -171,8 +171,8 @@ $_['entry_mail_parameter']                = 'Mail Parameters';
 $_['entry_mail_smtp_hostname']            = 'Hostname';
 $_['entry_mail_smtp_username']            = 'Username';
 $_['entry_mail_smtp_password']            = 'Password';
-$_['entry_mail_smtp_port']                = 'Port';
-$_['entry_mail_smtp_timeout']             = 'Timeout';
+$_['entry_mail_smtp_port']                = 'SMTP Port';
+$_['entry_mail_smtp_timeout']             = 'SMTP Timeout';
 $_['entry_mail_alert']                    = 'Alert Mail';
 $_['entry_mail_alert_email']              = 'Additional Alert Mail';
 $_['entry_shared']                        = 'Use Shared Sessions';
@@ -190,6 +190,8 @@ $_['entry_error_display']                 = 'Display Errors';
 $_['entry_error_log']                     = 'Log Errors';
 $_['entry_error_filename']                = 'Error Log Filename';
 $_['entry_status']                        = 'Status';
+$_['entry_secure']                        = 'Use SSL';
+$_['entry_encryption']                    = 'Encryption Key';
 
 // Help
 $_['help_geocode']                        = 'Please enter your store location geocode manually.';
@@ -226,7 +228,7 @@ $_['help_customer_group_display']         = 'Display customer groups that new cu
 $_['help_customer_price']                 = 'Only show prices when a customer is logged in.';
 $_['help_2fa']                            = 'Two-factor security for customers.';
 $_['help_2fa_expire']                     = 'Number of days until the token expires.';
-$_['help_login_attempts']                 = 'Maximum login attempts allowed before the account is locked for 1 hour. Customer accounts can be unlocked on the customer admin pages.';
+$_['help_login_attempts']                 = 'Maximum login attempts allowed before the account is locked for 1 hour. Customer and affiliate accounts can be unlocked on the customer or affiliate admin pages.';
 $_['help_account']                        = 'Forces people to agree to terms before an account can be created.';
 $_['help_invoice_prefix']                 = 'Set the invoice prefix (e.g. INV-2011-00). Invoice IDs will start at 1 for each unique prefix.';
 $_['help_cart_weight']                    = 'Show the cart weight on the cart page.';
@@ -272,6 +274,8 @@ $_['help_file_ext_allowed']               = 'Add which file extensions are allow
 $_['help_file_mime_allowed']              = 'Add which file mime types are allowed to be uploaded. Use a new line for each value.';
 $_['help_maintenance']                    = 'Prevents customers from browsing your store. They will instead see a maintenance message. If logged in as admin, you will see the store as normal.';
 $_['help_compression']                    = 'GZIP for more efficient transfer to requesting clients. Compression level must be between 0 - 9.';
+$_['help_secure']                         = 'To use SSL check with your host if a SSL certificate is installed and add the SSL URL to the catalog and admin config files.';
+$_['help_encryption']                     = 'Please provide a secret key that will be used to encrypt private information when processing orders.';
 
 // Error
 $_['error_warning']                       = 'Warning: Please check the form carefully for errors!';
