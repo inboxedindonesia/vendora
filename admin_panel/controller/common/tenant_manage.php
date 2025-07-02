@@ -4,10 +4,10 @@ namespace Opencart\Admin\Controller\Common;
 class TenantManage extends \Opencart\System\Engine\Controller {
     public function index(): void {
         $this->load->language('common/tenant_manage');
-        $this->load->model('common/regulatory');
+        $this->load->model('common/tenant');
 
         $company_id = (int)$this->request->get['company_id'];
-        $company_info = $this->model_common_regulatory->getCompany($company_id);
+        $company_info = $this->model_common_tenant->getCompany($company_id);
 
         if (!$company_info) {
             $this->session->data['error'] = $this->language->get('error_company_not_found');
@@ -35,7 +35,7 @@ class TenantManage extends \Opencart\System\Engine\Controller {
         ];
 
         $data['users'] = [];
-        $users = $this->model_common_regulatory->getUsersForCompany($company_id);
+        $users = $this->model_common_tenant->getUsersForCompany($company_id);
 
         foreach ($users as $user) {
             $data['users'][] = [

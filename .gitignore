@@ -1,0 +1,24 @@
+# OpenCart ignore
+config.php
+admin_panel/config.php
+.env
+# Composer
+/vendor/
+# Storage
+/storage/cache/
+/storage/download/
+/storage/logs/
+/storage/session/
+/storage/upload/
+# IDE/editor
+*.sublime*
+*.swp
+*.bak
+*.tmp
+*.idea/
+*.vscode/
+# OS
+.DS_Store
+Thumbs.db
+# Lain-lain
+*.log 

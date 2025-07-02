@@ -9,14 +9,14 @@ class TenantUserForm extends \Opencart\System\Engine\Controller {
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->load->model('user/user');
-        $this->load->model('common/regulatory');
+        $this->load->model('common/tenant');
         
         $company_id = (int)($this->request->get['company_id'] ?? 0);
         
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm($company_id)) {
             if (!isset($this->request->get['user_id'])) {
                 $user_id = $this->model_user_user->addUser($this->request->post);
-                $this->model_common_regulatory->assignUserToCompany($user_id, $company_id);
+                $this->model_common_tenant->assignUserToCompany($user_id, $company_id);
             } else {
                 $user_id = (int)$this->request->get['user_id'];
                 $this->model_user_user->editUser($user_id, $this->request->post);

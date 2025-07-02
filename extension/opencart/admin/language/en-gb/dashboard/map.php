@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']    = 'World Map';
+$_['heading_title']    = 'Vendora Maps';
 
 // Text
 $_['text_extension']   = 'Extensions';

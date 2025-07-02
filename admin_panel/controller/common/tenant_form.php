@@ -7,20 +7,40 @@ class TenantForm extends \Opencart\System\Engine\Controller {
     public function index(): void {
         $this->load->language('common/tenant_form');
         $this->document->setTitle($this->language->get('heading_title'));
-        $this->load->model('common/regulatory');
+        $this->getForm();
+    }
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_common_regulatory->editCompany($this->request->get['company_id'], $this->request->post['name']);
-            $this->session->data['success'] = $this->language->get('text_success');
-            $this->response->redirect($this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token']));
+    public function save(): void {
+        $this->load->language('common/tenant_form');
+        
+        $json = [];
+
+        if (!$this->user->hasPermission('modify', 'common/tenant_form')) {
+            $json['error']['warning'] = $this->language->get('error_permission');
         }
 
-        $this->getForm();
+        if (!$this->validateForm()) {
+            $json['error'] = $this->error;
+        }
+
+        if (!$json) {
+            $this->load->model('common/tenant');
+            
+            if (!empty($this->request->get['company_id'])) {
+                $this->model_common_tenant->editCompany($this->request->get['company_id'], $this->request->post);
+            }
+            
+            $json['success'] = $this->language->get('text_success');
+            // Add redirect to the list page after successful save
+            $json['redirect'] = $this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token'], true);
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
     }
 
     protected function getForm(): void {
         $data['heading_title'] = $this->language->get('heading_title');
-
         $data['text_form'] = !isset($this->request->get['company_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
         
         if (isset($this->error['warning'])) {
@@ -34,6 +54,13 @@ class TenantForm extends \Opencart\System\Engine\Controller {
         } else {
             $data['error_name'] = '';
         }
+        
+        if (isset($this->session->data['success'])) {
+            $data['success'] = $this->session->data['success'];
+            unset($this->session->data['success']);
+        } else {
+            $data['success'] = '';
+        }
 
         $data['breadcrumbs'] = [];
         $data['breadcrumbs'][] = [
@@ -44,24 +71,32 @@ class TenantForm extends \Opencart\System\Engine\Controller {
             'text' => $this->language->get('text_tenants'),
             'href' => $this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token'])
         ];
+        
+        $company_id_param = isset($this->request->get['company_id']) ? '&company_id=' . $this->request->get['company_id'] : '';
+
         $data['breadcrumbs'][] = [
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('common/tenant_form', 'user_token=' . $this->session->data['user_token'] . '&company_id=' . $this->request->get['company_id'])
+            'href' => $this->url->link('common/tenant_form', 'user_token=' . $this->session->data['user_token'] . $company_id_param)
         ];
         
-        $data['save'] = $this->url->link('common/tenant_form', 'user_token=' . $this->session->data['user_token'] . '&company_id=' . $this->request->get['company_id']);
+        $data['save'] = $this->url->link('common/tenant_form|save', 'user_token=' . $this->session->data['user_token'] . $company_id_param);
         $data['back'] = $this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token']);
 
+        $company_info = null;
         if (isset($this->request->get['company_id'])) {
-            $company_info = $this->model_common_regulatory->getCompany($this->request->get['company_id']);
+            $this->load->model('common/tenant');
+            $company_info = $this->model_common_tenant->getCompany($this->request->get['company_id']);
         }
 
-        if (isset($this->request->post['name'])) {
-            $data['name'] = $this->request->post['name'];
-        } elseif (!empty($company_info)) {
-            $data['name'] = $company_info['name'];
-        } else {
-            $data['name'] = '';
+        $fields = ['name', 'business_type', 'owner_name', 'email', 'address', 'contact'];
+        foreach ($fields as $field) {
+            if (isset($this->request->post[$field])) {
+                $data[$field] = $this->request->post[$field];
+            } elseif (!empty($company_info)) {
+                $data[$field] = $company_info[$field];
+            } else {
+                $data[$field] = '';
+            }
         }
 
         $data['header'] = $this->load->controller('common/header');
@@ -76,10 +111,10 @@ class TenantForm extends \Opencart\System\Engine\Controller {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 64)) {
+        if ((mb_strlen($this->request->post['name']) < 3) || (mb_strlen($this->request->post['name']) > 64)) {
             $this->error['name'] = $this->language->get('error_name');
         }
 
         return !$this->error;
     }
-} 
+}

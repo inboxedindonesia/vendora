@@ -1508,11 +1508,18 @@
                     </div>
                   </div>
                 </div>
-                <div class="row mb-3 required">
+                <div class="row mb-3">
                   <label for="input-error-filename" class="col-sm-2 col-form-label">{{ entry_error_filename }}</label>
                   <div class="col-sm-10">
                     <input type="text" name="config_error_filename" value="{{ config_error_filename }}" placeholder="{{ entry_error_filename }}" id="input-error-filename" class="form-control"/>
                     <div id="error-error-filename" class="invalid-feedback"></div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="input-auto-discount-days" class="col-sm-2 col-form-label">{{ entry_auto_discount_days }}</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="config_auto_discount_days" value="{{ config_auto_discount_days }}" placeholder="{{ entry_auto_discount_days }}" id="input-auto-discount-days" class="form-control"/>
+                    <div class="form-text">{{ help_auto_discount_days }}</div>
                   </div>
                 </div>
               </fieldset>

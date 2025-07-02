@@ -1,0 +1,32 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ back }}">Back</a></li>
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-eye"></i> {{ heading_title }}</div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <tr><th>Name</th><td>{{ company.name }}</td></tr>
+          <tr><th>Business Type</th><td>{{ company.business_type }}</td></tr>
+          <tr><th>Owner Name</th><td>{{ company.owner_name }}</td></tr>
+          <tr><th>Email</th><td>{{ company.email }}</td></tr>
+          <tr><th>Address</th><td>{{ company.address }}</td></tr>
+          <tr><th>City / Regency</th><td>{{ company.city }}</td></tr>
+          <tr><th>Province</th><td>{{ company.province }}</td></tr>
+          <tr><th>Country</th><td>{{ company.country }}</td></tr>
+          <tr><th>Postcode</th><td>{{ company.postcode }}</td></tr>
+          <tr><th>Contact</th><td>{{ company.contact }}</td></tr>
+        </table>
+        <a href="{{ back }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }} 

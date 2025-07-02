@@ -1,47 +1,31 @@
 <div class="card mb-3">
-  <div class="card-header"><i class="fa-solid fa-globe"></i> {{ heading_title }}</div>
+  <div class="card-header"><i class="fa-solid fa-map-location-dot"></i> {{ heading_title }}</div>
   <div class="card-body">
-    <div id="vmap" style="width: 100%; height: 260px;"></div>
+    <div id="vending-map" style="width: 100%; height: 700px;"></div>
   </div>
 </div>
 
-<link type="text/css" href="view/javascript/jquery/jqvmap/jqvmap.css" rel="stylesheet" media="screen"/>
-<script type="text/javascript" src="view/javascript/jquery/jqvmap/jquery.vmap.js"></script>
-<script type="text/javascript" src="view/javascript/jquery/jqvmap/maps/jquery.vmap.indonesia.js"></script>
+<!-- Leaflet.js CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<!-- Leaflet.js JavaScript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-<script type="text/javascript"><!--
-$(document).ready(function () {
-    $.ajax({
-        url: 'index.php?route=extension/opencart/dashboard/map.map&user_token={{ user_token }}',
-        dataType: 'json',
-        success: function (json) {
-            data = [];
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    var southWest = L.latLng(-11, 95);
+    var northEast = L.latLng(6, 141);
+    var bounds = L.latLngBounds(southWest, northEast);
 
-            for (i in json) {
-                data[i] = json[i]['total'];
-            }
-
-            $('#vmap').vectorMap({
-                map: 'indonesia_id',
-                backgroundColor: '#FFFFFF',
-                borderColor: '#FFFFFF',
-                color: '#9FD5F1',
-                hoverOpacity: 0.7,
-                selectedColor: '#666666',
-                enableZoom: true,
-                showTooltip: true,
-                values: data,
-                normalizeFunction: 'polynomial',
-                onLabelShow: function (event, label, code) {
-                    if (json[code]) {
-                        label.html('<strong>' + label.text() + '</strong><br />' + '{{ text_order }} ' + json[code]['total'] + '<br />' + '{{ text_sale }} ' + json[code]['amount']);
-                    }
-                }
-            });
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+    var map = L.map('vending-map', {
+      center: [-2.5, 118],
+      zoom: 5,
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      minZoom: 5
     });
-});
-//--></script>
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+  });
+</script>

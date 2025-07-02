@@ -1,0 +1,74 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header bg-light py-3 mb-4">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="m-0">{{ heading_title }}</h1>
+        <ol class="breadcrumb mt-2 mb-0">
+          {% for breadcrumb in breadcrumbs %}
+            <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+      <a href="{{ edit }}" class="btn btn-primary align-self-start" data-bs-toggle="tooltip" title="Edit Profile"><i class="fa-solid fa-pencil"></i> Edit</a>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
+    {% if success %}
+      <div class="alert alert-success alert-dismissible"><i class="fa-solid fa-check-circle"></i> {{ success }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
+    <div class="card shadow-sm">
+      <div class="card-header"><i class="fa-solid fa-id-card"></i> {{ heading_title }}</div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Nama Perusahaan</div>
+          <div class="col-sm-9">{{ company.name }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Tipe Bisnis</div>
+          <div class="col-sm-9">{{ company.business_type }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Owner</div>
+          <div class="col-sm-9">{{ company.owner_name }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Email</div>
+          <div class="col-sm-9">{{ company.email }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Alamat</div>
+          <div class="col-sm-9">{{ company.address }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Kota</div>
+          <div class="col-sm-9">{{ company.city }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Provinsi</div>
+          <div class="col-sm-9">{{ company.province }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Negara</div>
+          <div class="col-sm-9">{{ company.country }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Kode Pos</div>
+          <div class="col-sm-9">{{ company.postcode }}</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-3 fw-bold">Kontak</div>
+          <div class="col-sm-9">{{ company.contact }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }} 

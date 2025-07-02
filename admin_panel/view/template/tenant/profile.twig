@@ -1,0 +1,96 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header bg-light py-3 mb-4">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+      <h1 class="m-0">{{ heading_title }}</h1>
+      <ol class="breadcrumb m-0">
+        {% for breadcrumb in breadcrumbs %}
+          <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
+    {% if success %}
+      <div class="alert alert-success alert-dismissible"><i class="fa-solid fa-check-circle"></i> {{ success }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
+    <div class="card">
+      <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ heading_title }}</div>
+      <div class="card-body">
+        <form id="form-tenant-profile" action="{{ action }}" method="post">
+          <div class="row mb-3 required">
+            <label class="col-sm-2 col-form-label">Nama Perusahaan</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ company.name }}" placeholder="Nama Perusahaan" class="form-control" required/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Owner</label>
+            <div class="col-sm-10">
+              <input type="text" name="owner_name" value="{{ company.owner_name }}" placeholder="Owner" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input type="email" name="email" value="{{ company.email }}" placeholder="Email" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Alamat</label>
+            <div class="col-sm-10">
+              <textarea name="address" placeholder="Alamat" class="form-control">{{ company.address }}</textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Kontak</label>
+            <div class="col-sm-10">
+              <input type="text" name="contact" value="{{ company.contact }}" placeholder="Kontak" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Tipe Bisnis</label>
+            <div class="col-sm-10">
+              <input type="text" name="business_type" value="{{ company.business_type }}" placeholder="Tipe Bisnis" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Kota</label>
+            <div class="col-sm-10">
+              <input type="text" name="city" value="{{ company.city }}" placeholder="Kota" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Provinsi</label>
+            <div class="col-sm-10">
+              <input type="text" name="province" value="{{ company.province }}" placeholder="Provinsi" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Negara</label>
+            <div class="col-sm-10">
+              <input type="text" name="country" value="{{ company.country }}" placeholder="Negara" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Kode Pos</label>
+            <div class="col-sm-10">
+              <input type="text" name="postcode" value="{{ company.postcode }}" placeholder="Kode Pos" class="form-control"/>
+            </div>
+          </div>
+          <div class="float-end">
+            <button type="submit" data-bs-toggle="tooltip" title="Simpan" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }} 

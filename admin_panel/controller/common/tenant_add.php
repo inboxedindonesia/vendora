@@ -14,12 +14,12 @@ class TenantAdd extends \Opencart\System\Engine\Controller {
         $this->load->language('common/tenant_add'); // Language file bisa dibuat nanti
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('common/regulatory');
+        $this->load->model('common/tenant');
         $this->load->model('user/user');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
             // Jika validasi sukses, tambahkan tenant dan admin-nya
-            $this->model_common_regulatory->addTenantWithAdmin($this->request->post);
+            $this->model_common_tenant->addTenantWithAdmin($this->request->post);
             $this->session->data['success'] = $this->language->get('text_success');
             $this->response->redirect($this->url->link('common/tenant_list', 'user_token=' . $this->session->data['user_token']));
         }
@@ -50,6 +50,14 @@ class TenantAdd extends \Opencart\System\Engine\Controller {
 
         // Form data
         $data['company_name'] = $this->request->post['company_name'] ?? '';
+        $data['business_type'] = $this->request->post['business_type'] ?? '';
+        $data['owner_name'] = $this->request->post['owner_name'] ?? '';
+        $data['address'] = $this->request->post['address'] ?? '';
+        $data['city'] = $this->request->post['city'] ?? '';
+        $data['province'] = $this->request->post['province'] ?? '';
+        $data['country'] = $this->request->post['country'] ?? '';
+        $data['postcode'] = $this->request->post['postcode'] ?? '';
+        $data['contact'] = $this->request->post['contact'] ?? '';
         $data['username'] = $this->request->post['username'] ?? '';
         $data['firstname'] = $this->request->post['firstname'] ?? '';
         $data['lastname'] = $this->request->post['lastname'] ?? '';
@@ -65,6 +73,30 @@ class TenantAdd extends \Opencart\System\Engine\Controller {
     protected function validate(): bool {
         if (!oc_validate_length($this->request->post['company_name'], 2, 128)) {
             $this->error['company_name'] = 'Company name must be between 2 and 128 characters!';
+        }
+        if (!oc_validate_length($this->request->post['business_type'], 1, 128)) {
+            $this->error['business_type'] = 'Business Type is required!';
+        }
+        if (!oc_validate_length($this->request->post['owner_name'], 1, 128)) {
+            $this->error['owner_name'] = 'Owner Name is required!';
+        }
+        if (!oc_validate_length($this->request->post['address'], 1, 255)) {
+            $this->error['address'] = 'Address is required!';
+        }
+        if (!oc_validate_length($this->request->post['city'], 1, 128)) {
+            $this->error['city'] = 'City / Regency is required!';
+        }
+        if (!oc_validate_length($this->request->post['province'], 1, 128)) {
+            $this->error['province'] = 'Province is required!';
+        }
+        if (!oc_validate_length($this->request->post['country'], 1, 128)) {
+            $this->error['country'] = 'Country is required!';
+        }
+        if (!oc_validate_length($this->request->post['postcode'], 1, 16)) {
+            $this->error['postcode'] = 'Postcode is required!';
+        }
+        if (!oc_validate_length($this->request->post['contact'], 1, 64)) {
+            $this->error['contact'] = 'Contact is required!';
         }
         
         if (!oc_validate_length($this->request->post['username'], 3, 20)) {

@@ -2,10 +2,6 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="float-end">
-        <button type="submit" form="form-tenant" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
-        <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
-      </div>
       <h1>{{ heading_title }}</h1>
       <ol class="breadcrumb">
         {% for breadcrumb in breadcrumbs %}
@@ -20,22 +16,88 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
     {% endif %}
+    {% if success %}
+      <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endif %}
     <div class="card">
       <div class="card-header"><i class="fa-solid fa-pencil"></i> {{ text_form }}</div>
       <div class="card-body">
         <form id="form-tenant" action="{{ save }}" method="post" data-oc-toggle="ajax">
+          
+          <div class="float-end">
+            <button type="submit" data-bs-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
+            <a href="{{ back }}" data-bs-toggle="tooltip" title="{{ button_back }}" class="btn btn-light"><i class="fa-solid fa-reply"></i></a>
+          </div>
+
           <div class="row mb-3 required">
             <label for="input-name" class="col-sm-2 col-form-label">{{ entry_name }}</label>
             <div class="col-sm-10">
               <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control"/>
-              {% if error_name %}
-                <div class="text-danger">{{ error_name }}</div>
-              {% endif %}
+              <div id="error-name" class="invalid-feedback"></div>
             </div>
           </div>
+          <div class="row mb-3">
+            <label for="input-business-type" class="col-sm-2 col-form-label">{{ entry_business_type }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="business_type" value="{{ business_type }}" placeholder="{{ entry_business_type }}" id="input-business-type" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-owner-name" class="col-sm-2 col-form-label">{{ entry_owner_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="owner_name" value="{{ owner_name }}" placeholder="{{ entry_owner_name }}" id="input-owner-name" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-email" class="col-sm-2 col-form-label">{{ entry_email }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-address" class="col-sm-2 col-form-label">{{ entry_address }}</label>
+            <div class="col-sm-10">
+              <textarea name="address" placeholder="{{ entry_address }}" id="input-address" class="form-control">{{ address }}</textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-city" class="col-sm-2 col-form-label">{{ entry_city }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-province" class="col-sm-2 col-form-label">{{ entry_province }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="province" value="{{ province }}" placeholder="{{ entry_province }}" id="input-province" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-country" class="col-sm-2 col-form-label">{{ entry_country }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="country" value="{{ country }}" placeholder="{{ entry_country }}" id="input-country" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-postcode" class="col-sm-2 col-form-label">{{ entry_postcode }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-postcode" class="form-control"/>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="input-contact" class="col-sm-2 col-form-label">{{ entry_contact }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="contact" value="{{ contact }}" placeholder="{{ entry_contact }}" id="input-contact" class="form-control"/>
+            </div>
+          </div>
+          <fieldset>
+            <legend>{{ text_user }}</legend>
+          </fieldset>
         </form>
       </div>
     </div>
   </div>
 </div>
-{{ footer }} 
+{{ footer }}

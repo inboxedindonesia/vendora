@@ -44,23 +44,39 @@ class Dashboard extends \Opencart\System\Engine\Controller {
 				$output = $this->load->controller('extension/' . $extension['extension'] . '/dashboard/' . $extension['code'] . '.dashboard');
 
 				if (!$output instanceof \Exception) {
+					$width = $this->config->get('dashboard_' . $extension['code'] . '_width');
+					$sort_order = (int)$this->config->get('dashboard_' . $extension['code'] . '_sort_order');
+					$code = $extension['code'];
+
+					$top_widgets = ['order', 'sale', 'customer', 'online'];
+
+					if ($code == 'map') {
+						$width = 12;
+						$sort_order = 5; // After top 4 widgets
+					} elseif ($code == 'chart') {
+						$width = 12;
+						$sort_order = 6; // After map
+					} elseif (!in_array($code, $top_widgets)) {
+						$sort_order += 6; // Push all other widgets down
+					}
+
 					$dashboards[] = [
 						'code'       => $extension['code'],
-						'width'      => $this->config->get('dashboard_' . $extension['code'] . '_width'),
-						'sort_order' => $this->config->get('dashboard_' . $extension['code'] . '_sort_order'),
+						'width'      => $width,
+						'sort_order' => $sort_order,
 						'output'     => $output
 					];
 				}
 			}
 		}
 
-		$sort_order = [];
+		$sort_order_data = [];
 
 		foreach ($dashboards as $key => $value) {
-			$sort_order[$key] = $value['sort_order'];
+			$sort_order_data[$key] = $value['sort_order'];
 		}
 
-		array_multisort($sort_order, SORT_ASC, $dashboards);
+		array_multisort($sort_order_data, SORT_ASC, $dashboards);
 
 		// Split the array so the columns width is not more than 12 on each row.
 		$width = 0;
